@@ -1,1 +1,8 @@
 yarn eslint --fix src --ext .js
+yarn sequelize migration:create --name create-users
+yarn sequelize db:migrate
+yarn sequelize db:migrate:undo
+yarn sequelize db:migrate:undo:all
+
+Kill porcess assigned to the port number
+sudo kill -9 `sudo lsof -t -i:3333`
