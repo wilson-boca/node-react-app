@@ -6,3 +6,12 @@ yarn sequelize db:migrate:undo:all
 
 Kill porcess assigned to the port number
 sudo kill -9 `sudo lsof -t -i:3333`
+
+yarn sequelize seed:generate --name admin-user
+Gera um arquivo na pasta src/database/seed
+yarn sequelize db:seed:all
+
+Como configurar:
+Sucrase + Nodemon;
+ESLint + Prettier + EditorConfig;
+Sequelize (Utilize PostgreSQL ou MySQL);
