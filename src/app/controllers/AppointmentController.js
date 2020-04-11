@@ -71,25 +71,6 @@ class AppointmentController {
       appointment,
     });
 
-    // const formattedDate = format(
-    //   appointment.date,
-    //   "'dia' dd 'de ' MMMM', às' H:mm'h'",
-    //   {
-    //     locale: pt,
-    //   }
-    // );
-
-    // await Mail.sendmail({
-    //   to: `${appointment.provider.name} <wilson.boca@gmail.com>`,
-    //   subject: 'Agendamento Cancelado',
-    //   template: 'cancellation',
-    //   context: {
-    //     provider: appointment.provider.name,
-    //     name: appointment.user.name,
-    //     date: formattedDate,
-    //   },
-    // });
-
     res.json(appointment);
   }
 
