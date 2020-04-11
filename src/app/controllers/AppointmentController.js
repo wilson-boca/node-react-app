@@ -5,8 +5,9 @@ import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
 import Notification from '../schemas/Notification';
-import Mail from '../../lib/Mail';
 import settings from '../../config/settings';
+import Queue from '../../lib/Queue';
+import cancellationMail from '../jobs/CancellationMail';
 
 class AppointmentController {
   async index(req, res) {
@@ -66,24 +67,28 @@ class AppointmentController {
     appointment.canceled_at = new Date();
     await appointment.save();
 
-    const formattedDate = format(
-      appointment.date,
-      "'dia' dd 'de ' MMMM', às' H:mm'h'",
-      {
-        locale: pt,
-      }
-    );
-
-    await Mail.sendmail({
-      to: `${appointment.provider.name} <wilson.boca@gmail.com>`,
-      subject: 'Agendamento Cancelado',
-      template: 'cancellation',
-      context: {
-        provider: appointment.provider.name,
-        name: appointment.user.name,
-        date: formattedDate,
-      },
+    await Queue.add(cancellationMail.key, {
+      appointment,
     });
+
+    // const formattedDate = format(
+    //   appointment.date,
+    //   "'dia' dd 'de ' MMMM', às' H:mm'h'",
+    //   {
+    //     locale: pt,
+    //   }
+    // );
+
+    // await Mail.sendmail({
+    //   to: `${appointment.provider.name} <wilson.boca@gmail.com>`,
+    //   subject: 'Agendamento Cancelado',
+    //   template: 'cancellation',
+    //   context: {
+    //     provider: appointment.provider.name,
+    //     name: appointment.user.name,
+    //     date: formattedDate,
+    //   },
+    // });
 
     res.json(appointment);
   }
